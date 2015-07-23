@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Medidata.Cloud.Thermometer</id>
+    <version>0.1.2</version>
+    <title>Medidata.Cloud.Thermometer</title>
+    <authors>jshao@mdsol.com</authors>
+    <owners>jshao@mdsol</owners>
+    <projectUrl>https://github.com/mdsol/Medidata.Cloud.Thermometer</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>In the process, spawns a thread as REST service and listens to the specified port</description>
+    <releaseNotes>Initial version</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>REST service thread process lite light</tags>
+    <dependencies>
+      <dependency id="Microsoft.Owin.Host.HttpListener" version="2.0.2" />
+      <dependency id="Microsoft.Owin.Hosting" version="3.0.1" />
+      <dependency id="Newtonsoft.Json" version="6.0.4" />
+      <dependency id="Owin.Extensions" version="0.8.5" />
+    </dependencies>
+  </metadata>
+</package>

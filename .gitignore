@@ -1,0 +1,6 @@
+/packages
+*.user
+bin
+obj
+/Medidata.Cloud.Thermometer/New-NuGetPackages
+*.suo
