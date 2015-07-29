@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Medidata.Cloud.Thermometer.Listeners;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
@@ -20,6 +22,16 @@ namespace Medidata.Cloud.Thermometer
 #pragma warning restore 169
 
         private readonly ActionRouteConfiguration _routes = new ActionRouteConfiguration();
+        private Dictionary<string, IListen> _listeners =new Dictionary<string, IListen>();
+
+        public IListen Listener { get; private set; }
+
+
+        public LiteRestApp Use(IListen listener)
+        {
+            Listener = listener;
+            return this;
+        }
 
         public LiteRestApp WhenGet(string routePath, Func<IDictionary<string, object>, object> func)
         {
@@ -38,6 +50,11 @@ namespace Medidata.Cloud.Thermometer
 
         public Task<IDisposable> Listen(int port)
         {
+            if (Listener == null)
+            {
+                Listener = new OwinListener(_routes);
+            }
+            return Listener.Listen(port);
             if (port <= 1024) throw new ArgumentException("Must choose a port greater than 1024", "port");
 
             var serviceProvider = (ServiceProvider)ServicesFactory.Create();
@@ -48,5 +65,6 @@ namespace Medidata.Cloud.Thermometer
 
             return Task.Run(() => starter.Start(options));
         }
+
     }
 }

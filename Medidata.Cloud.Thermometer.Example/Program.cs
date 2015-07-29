@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Medidata.Cloud.Thermometer.Listeners;
 
 namespace Medidata.Cloud.Thermometer.Example
 {
@@ -9,7 +10,7 @@ namespace Medidata.Cloud.Thermometer.Example
         private static void Main(string[] args)
         {
             var app = new LiteRestApp();
-            app
+            app.Use(new WebApiOnOwinListener())
                 .WhenGet("/HowManyCpus", databag =>
                 {
                     var msg = String.Join(", ", databag.Select(x => String.Format("[{0}: {1}]", x.Key, x.Value)));
