@@ -24,7 +24,7 @@ namespace Medidata.Cloud.Thermometer
 
         private readonly ThermometerQuestionHandlerPool _handlerPool = new ThermometerQuestionHandlerPool();
 
-        public ThermometerApp Reply(string question, Func<IThermometerQuestion, object> func)
+        public ThermometerApp Answer(string question, Func<IThermometerQuestion, object> func)
         {
             if (String.IsNullOrWhiteSpace(question)) throw new ArgumentException("Question name cannot be null or empty string.", "question");
             if (func == null) throw new ArgumentNullException("func");
