@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer
 {
-    [ExcludeFromCodeCoverage]
     internal class ThermometerRouteHandlerPool : IEnumerable<IThermometerHandler>
     {
         private readonly IDictionary<PathString, IThermometerHandler> _dic = new Dictionary<PathString, IThermometerHandler>();

@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Extensions\OwinResponseExtensions.cs" />
     <Compile Include="IThermometerHandler.cs" />
+    <Compile Include="Helpers\MicrosoftOwinHostHttpListenerAnchor.cs" />
     <Compile Include="Middlewares\ListAllQuestionMiddleware.cs" />
     <Compile Include="ThermometerQuestion.cs" />
     <Compile Include="IThermometerQuestion.cs" />

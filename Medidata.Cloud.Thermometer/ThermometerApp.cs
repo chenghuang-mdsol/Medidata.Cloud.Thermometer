@@ -1,7 +1,5 @@
 ﻿using System;
 using Medidata.Cloud.Thermometer.Middlewares;
-using Microsoft.Owin;
-using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
 using Owin;
 
@@ -9,14 +7,6 @@ namespace Medidata.Cloud.Thermometer
 {
     public class ThermometerApp
     {
-        /// <summary>
-        /// This unused field is to keep reference of Microsoft.Owin.Host.HttpListener.dll, 
-        /// so as the assembly file can be copied to the caller's folder when build.
-        /// </summary>
-#pragma warning disable 169
-        private readonly OwinHttpListener _assemblyAnchor;
-#pragma warning restore 169
-
         private readonly ThermometerRouteHandlerPool _routeHandlerPool = new ThermometerRouteHandlerPool();
 
         public ThermometerApp Answer(string route, Func<IThermometerQuestion, object> func)
