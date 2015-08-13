@@ -6,18 +6,19 @@ namespace Medidata.Cloud.Thermometer.Extensions
 {
     public static class OwinRequestExtensions
     {
-        internal static IDictionary<string, object> ToDatabag(this IOwinRequest owner)
+        internal static IThermometerQuestion ToThermometerQuestion(this IOwinRequest owner)
         {
-            var dic = new Dictionary<string, object>(owner.Environment);
-            if (owner.QueryString.HasValue)
+            var question = new ThermometerQuestion { Name = owner.Path.ToString() };
+
+            if (!owner.QueryString.HasValue) return question;
+
+            var queryParams = HttpUtility.ParseQueryString(owner.QueryString.ToString());
+            foreach (var key in queryParams.AllKeys)
             {
-                var queryParams = HttpUtility.ParseQueryString(owner.QueryString.ToString());
-                foreach (var key in queryParams.AllKeys)
-                {
-                    dic.Add(key, queryParams[key]);
-                }
+                question.Add(key, queryParams[key]);
             }
-            return dic;
+
+            return question;
         }
     }
 }

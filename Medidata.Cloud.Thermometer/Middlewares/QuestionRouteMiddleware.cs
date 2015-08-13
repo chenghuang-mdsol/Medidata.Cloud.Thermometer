@@ -7,25 +7,25 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class ActionRouteMiddleware : OwinMiddleware
+    public class QuestionRouteMiddleware : OwinMiddleware
     {
-        private readonly ActionRouteConfiguration _config;
+        private readonly ThermometerQuestionHandlers _handlers;
 
-        public ActionRouteMiddleware(OwinMiddleware next, ActionRouteConfiguration config)
+        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerQuestionHandlers handlers)
             : base(next)
         {
-            if (config == null) throw new ArgumentNullException("config");
-            _config = config;
+            if (handlers == null) throw new ArgumentNullException("handlers");
+            _handlers = handlers;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            Func<IDictionary<string, object>, object> func;
-            if (_config.TryGetValue(context.Request.Path, out func))
+            Func<IThermometerQuestion, object> func;
+            if (_handlers.TryGetValue(context.Request.Path, out func))
             {
                 try
                 {
-                    var result = func(context.Request.ToDatabag()) ?? new { };
+                    var result = func(context.Request.ToThermometerQuestion()) ?? new { };
                     context.Response.Write(result.ToJsonString());
 
                     await Next.Invoke(context);

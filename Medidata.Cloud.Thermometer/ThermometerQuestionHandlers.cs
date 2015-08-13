@@ -4,7 +4,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer
 {
-    public class ActionRouteConfiguration : Dictionary<PathString, Func<IDictionary<string, object>, object>>
+    public class ThermometerQuestionHandlers : Dictionary<PathString, Func<IThermometerQuestion, object>>
     {
     }
 }
