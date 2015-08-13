@@ -3,10 +3,9 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer
 {
-    public interface IThermometerHandler
+    internal interface IThermometerHandler
     {
-        string Name { get; }
-        PathString RoutePath { get; }
-        Func<dynamic, object> Func { get; }
+        IThermometerQuestion Question { get; }
+        Func<IThermometerQuestion, object> Handler { get; }
     }
 }

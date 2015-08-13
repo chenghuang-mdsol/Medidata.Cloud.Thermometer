@@ -1,5 +1,6 @@
 ﻿using System;
 using Medidata.Cloud.Thermometer.Middlewares;
+using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
 using Owin;
@@ -18,22 +19,21 @@ namespace Medidata.Cloud.Thermometer
 
         private readonly ThermometerRouteHandlerPool _routeHandlerPool = new ThermometerRouteHandlerPool();
 
-        public ThermometerApp Answer(string route, Func<dynamic, object> func)
+        public ThermometerApp Answer(string route, Func<IThermometerQuestion, object> func)
         {
-            if (String.IsNullOrWhiteSpace(route)) throw new ArgumentException("Question route path cannot be null or empty string.", "route");
-            return Answer(route.TrimStart('/').Replace('/', '_'), route, func);
+            return AnswerImpl(route, func);
         }
 
-        public ThermometerApp Answer(string name, string route, Func<dynamic, object> func)
+        public ThermometerApp Answer(string name, string route, Func<IThermometerQuestion, object> func)
         {
-            if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException("Question name cannot be null or empty string.", "name");
-            if (String.IsNullOrWhiteSpace(route)) throw new ArgumentException("Question route path cannot be null or empty string.", "route");
-            if (func == null) throw new ArgumentNullException("func");
+            return AnswerImpl(route, func, name);
+        }
 
-            var handler = new ThermometerHandler(route.Trim(), func, name);
-
-            _routeHandlerPool.Add(handler.RoutePath, handler);
-
+        private ThermometerApp AnswerImpl(string route, Func<IThermometerQuestion, object> func, string name = null)
+        {
+            var question = new ThermometerQuestion(route, name);
+            var handler = new ThermometerHandler(question, func);
+            _routeHandlerPool.Add(handler);
             return this;
         }
 

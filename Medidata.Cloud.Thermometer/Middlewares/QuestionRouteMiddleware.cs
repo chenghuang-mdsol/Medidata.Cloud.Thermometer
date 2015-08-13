@@ -7,7 +7,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class QuestionRouteMiddleware : OwinMiddleware
+    internal class QuestionRouteMiddleware : OwinMiddleware
     {
         private readonly ThermometerRouteHandlerPool _handlerSet;
 
@@ -20,15 +20,13 @@ namespace Medidata.Cloud.Thermometer.Middlewares
 
         public override async Task Invoke(IOwinContext context)
         {
-            Func<dynamic, object> func;
-            IThermometerHandler handler;
-            if (_handlerSet.TryGetValue(context.Request.Path, out handler))
+            var handler = _handlerSet.FindOrDefault(context.Request.Path.ToString());
+            if (handler != null)
             {
                 try
                 {
-                    var result = handler.Func(context.Request.ToThermometerQuestion()) ?? new { };
-                    var json = result.ToString();
-                    context.Response.Write(json);
+                    var result = handler.Handler(context.Request.ToThermometerQuestion()) ?? new { };
+                    context.Response.WriteAsJson(result);
 
                     await Next.Invoke(context);
                 }

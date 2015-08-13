@@ -9,19 +9,14 @@ namespace Medidata.Cloud.Thermometer.Example
         private static void Main()
         {
             var app = new ThermometerApp()
-                .Answer("/HowManyCpus/fasf", question =>
+                .Answer("/level1/subquestion", req =>
                 {
-                    return new {result = "OK", x = question.x , y = question.y, name = question.Name };
+                    return new { result = "OK", query_parameters = req, route = req.Route };
                 })
-                .Answer("/CanAccessDb", question => new {result = "NG", message = "Exception message"})
-                .Answer("/GetException", question =>
+                .Answer("overridenQuestionName" ,"/CanAccessDb", req => new {result = "NG", message = "Exception message"})
+                .Answer("/GetException", req =>
                 {
                     throw new Exception("Intential exception for demo");
-                })
-                .Answer("/CacheFlush", question =>
-                {
-                    // Call Rave's cache flush funciton.
-                    return new {result = "OK", message = "Cache flush is done."};
                 })
                 .Listen(9000);
 

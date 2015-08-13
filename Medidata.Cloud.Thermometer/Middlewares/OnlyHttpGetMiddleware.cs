@@ -5,7 +5,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class OnlyHttpGetMiddleware : OwinMiddleware
+    internal class OnlyHttpGetMiddleware : OwinMiddleware
     {
         public OnlyHttpGetMiddleware(OwinMiddleware next)
             : base(next)

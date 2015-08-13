@@ -8,7 +8,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class ListAllQuestionMiddleware : OwinMiddleware
+    internal class ListAllQuestionMiddleware : OwinMiddleware
     {
         private readonly ThermometerRouteHandlerPool _handlerSet;
 
@@ -25,8 +25,8 @@ namespace Medidata.Cloud.Thermometer.Middlewares
             var baseUrl = request.Uri.ToString().TrimEnd('/');
             if (request.Path.ToString() == "/")
             {
-                var list = _handlerSet.Values
-                    .Select(kvp => new { name = kvp.Name, url = baseUrl + kvp.RoutePath.ToString() })
+                var list = _handlerSet
+                    .Select(kvp => new { name = kvp.Question.Name, url = baseUrl + kvp.Question.Route })
                     .ToList();
                 context.Response.WriteAsJson(list);
             }

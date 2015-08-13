@@ -64,6 +64,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Medidata.Cloud.Thermometer\Medidata.Cloud.Thermometer.csproj">
+      <Project>{26f8d7d1-8df2-4df3-8f1a-fd3e5d18b8a8}</Project>
+      <Name>Medidata.Cloud.Thermometer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
