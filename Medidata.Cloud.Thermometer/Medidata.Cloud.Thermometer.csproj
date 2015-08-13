@@ -78,13 +78,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\OwinResponseExtensions.cs" />
+    <Compile Include="IThermometerHandler.cs" />
+    <Compile Include="Middlewares\ListAllQuestionMiddleware.cs" />
     <Compile Include="ThermometerQuestion.cs" />
     <Compile Include="IThermometerQuestion.cs" />
-    <Compile Include="ThermometerQuestionHandlerPool.cs" />
+    <Compile Include="ThermometerHandler.cs" />
+    <Compile Include="ThermometerRouteHandlerConfiguration.cs" />
     <Compile Include="Middlewares\QuestionRouteMiddleware.cs" />
     <Compile Include="Middlewares\OnlyHttpGetMiddleware.cs" />
     <Compile Include="Middlewares\JsonResponseMiddleware.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="ThermometerApp.cs" />
     <Compile Include="Extensions\OwinRequestExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

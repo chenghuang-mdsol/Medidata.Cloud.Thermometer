@@ -9,23 +9,24 @@ namespace Medidata.Cloud.Thermometer.Middlewares
 {
     public class QuestionRouteMiddleware : OwinMiddleware
     {
-        private readonly ThermometerQuestionHandlerPool _handlerPool;
+        private readonly ThermometerRouteHandlerConfiguration _handlerSet;
 
-        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerQuestionHandlerPool handlerPool)
+        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerRouteHandlerConfiguration handlerSet)
             : base(next)
         {
-            if (handlerPool == null) throw new ArgumentNullException("handlerPool");
-            _handlerPool = handlerPool;
+            if (handlerSet == null) throw new ArgumentNullException("handlerSet");
+            _handlerSet = handlerSet;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
             Func<dynamic, object> func;
-            if (_handlerPool.TryGetValue(context.Request.Path, out func))
+            IThermometerHandler handler;
+            if (_handlerSet.TryGetValue(context.Request.Path, out handler))
             {
                 try
                 {
-                    var result = func(context.Request.ToThermometerQuestion()) ?? new { };
+                    var result = handler.Func(context.Request.ToThermometerQuestion()) ?? new { };
                     var json = result.ToString();
                     context.Response.Write(json);
 
@@ -34,8 +35,8 @@ namespace Medidata.Cloud.Thermometer.Middlewares
                 catch (Exception e)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    var jsonString = new { exception = e.ToString() }.ToJsonString();
-                    context.Response.Write(jsonString);
+                    var result = new { exception = e.ToString() };
+                    context.Response.WriteAsJson(result);
                 }
             }
             else

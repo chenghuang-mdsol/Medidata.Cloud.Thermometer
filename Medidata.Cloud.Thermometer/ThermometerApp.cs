@@ -22,19 +22,23 @@ namespace Medidata.Cloud.Thermometer
         private readonly OwinHttpListener _assemblyAnchor;
 #pragma warning restore 169
 
-        private readonly ThermometerQuestionHandlerPool _handlerPool = new ThermometerQuestionHandlerPool();
+        private readonly ThermometerRouteHandlerConfiguration _routeHandlerConfig = new ThermometerRouteHandlerConfiguration();
 
-        public ThermometerApp Answer(string question, Func<dynamic, object> func)
+        public ThermometerApp Answer(string route, Func<dynamic, object> func)
         {
-            if (String.IsNullOrWhiteSpace(question)) throw new ArgumentException("Question name cannot be null or empty string.", "question");
+            if (String.IsNullOrWhiteSpace(route)) throw new ArgumentException("Question route path cannot be null or empty string.", "route");
+            return Answer(route.TrimStart('/').Replace('/', '_'), route, func);
+        }
+
+        public ThermometerApp Answer(string name, string route, Func<dynamic, object> func)
+        {
+            if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException("Question name cannot be null or empty string.", "name");
+            if (String.IsNullOrWhiteSpace(route)) throw new ArgumentException("Question route path cannot be null or empty string.", "route");
             if (func == null) throw new ArgumentNullException("func");
 
-            var key = new PathString(question.Trim());
+            var handler = new ThermometerHandler(route.Trim(), func, name);
 
-            if (_handlerPool.ContainsKey(key))
-                throw new ArgumentException(String.Format("Question '{0}' has been defined.", question));
-
-            _handlerPool.Add(key, func);
+            _routeHandlerConfig.Add(handler.RoutePath, handler);
 
             return this;
         }
@@ -46,7 +50,8 @@ namespace Medidata.Cloud.Thermometer
                     {
                         app.Use<OnlyHttpGetMiddleware>()
                            .Use<JsonResponseMiddleware>()
-                           .Use<QuestionRouteMiddleware>(_handlerPool);
+                           .Use<ListAllQuestionMiddleware>(_routeHandlerConfig)
+                           .Use<QuestionRouteMiddleware>(_routeHandlerConfig);
                     });
         }
     }
