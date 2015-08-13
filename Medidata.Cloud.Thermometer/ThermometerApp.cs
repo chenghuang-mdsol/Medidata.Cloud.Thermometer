@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Medidata.Cloud.Thermometer.Middlewares;
-using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
 using Microsoft.Owin.Hosting;
-using Microsoft.Owin.Hosting.Services;
-using Microsoft.Owin.Hosting.Starter;
 using Owin;
 
 namespace Medidata.Cloud.Thermometer
@@ -22,7 +16,7 @@ namespace Medidata.Cloud.Thermometer
         private readonly OwinHttpListener _assemblyAnchor;
 #pragma warning restore 169
 
-        private readonly ThermometerRouteHandlerConfiguration _routeHandlerConfig = new ThermometerRouteHandlerConfiguration();
+        private readonly ThermometerRouteHandlerPool _routeHandlerPool = new ThermometerRouteHandlerPool();
 
         public ThermometerApp Answer(string route, Func<dynamic, object> func)
         {
@@ -38,7 +32,7 @@ namespace Medidata.Cloud.Thermometer
 
             var handler = new ThermometerHandler(route.Trim(), func, name);
 
-            _routeHandlerConfig.Add(handler.RoutePath, handler);
+            _routeHandlerPool.Add(handler.RoutePath, handler);
 
             return this;
         }
@@ -50,8 +44,8 @@ namespace Medidata.Cloud.Thermometer
                     {
                         app.Use<OnlyHttpGetMiddleware>()
                            .Use<JsonResponseMiddleware>()
-                           .Use<ListAllQuestionMiddleware>(_routeHandlerConfig)
-                           .Use<QuestionRouteMiddleware>(_routeHandlerConfig);
+                           .Use<ListAllQuestionMiddleware>(_routeHandlerPool)
+                           .Use<QuestionRouteMiddleware>(_routeHandlerPool);
                     });
         }
     }

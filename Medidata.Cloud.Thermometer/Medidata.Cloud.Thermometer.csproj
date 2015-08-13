@@ -84,7 +84,7 @@
     <Compile Include="ThermometerQuestion.cs" />
     <Compile Include="IThermometerQuestion.cs" />
     <Compile Include="ThermometerHandler.cs" />
-    <Compile Include="ThermometerRouteHandlerConfiguration.cs" />
+    <Compile Include="ThermometerRouteHandlerPool.cs" />
     <Compile Include="Middlewares\QuestionRouteMiddleware.cs" />
     <Compile Include="Middlewares\OnlyHttpGetMiddleware.cs" />
     <Compile Include="Middlewares\JsonResponseMiddleware.cs" />

@@ -9,9 +9,9 @@ namespace Medidata.Cloud.Thermometer.Middlewares
 {
     public class QuestionRouteMiddleware : OwinMiddleware
     {
-        private readonly ThermometerRouteHandlerConfiguration _handlerSet;
+        private readonly ThermometerRouteHandlerPool _handlerSet;
 
-        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerRouteHandlerConfiguration handlerSet)
+        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerRouteHandlerPool handlerSet)
             : base(next)
         {
             if (handlerSet == null) throw new ArgumentNullException("handlerSet");

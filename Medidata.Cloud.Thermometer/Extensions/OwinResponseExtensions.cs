@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Web;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Script.Serialization;
 using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class OwinResponseExtensions
     {
         internal static void WriteAsJson(this IOwinResponse owner, object target)
