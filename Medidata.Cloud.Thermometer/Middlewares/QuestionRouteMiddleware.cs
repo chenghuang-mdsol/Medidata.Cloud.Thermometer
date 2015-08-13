@@ -20,13 +20,14 @@ namespace Medidata.Cloud.Thermometer.Middlewares
 
         public override async Task Invoke(IOwinContext context)
         {
-            Func<IThermometerQuestion, object> func;
+            Func<dynamic, object> func;
             if (_handlerPool.TryGetValue(context.Request.Path, out func))
             {
                 try
                 {
                     var result = func(context.Request.ToThermometerQuestion()) ?? new { };
-                    context.Response.Write(result.ToJsonString());
+                    var json = result.ToString();
+                    context.Response.Write(json);
 
                     await Next.Invoke(context);
                 }

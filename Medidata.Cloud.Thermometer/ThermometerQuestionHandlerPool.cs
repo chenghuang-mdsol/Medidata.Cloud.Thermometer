@@ -4,7 +4,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer
 {
-    public class ThermometerQuestionHandlerPool : Dictionary<PathString, Func<IThermometerQuestion, object>>
+    public class ThermometerQuestionHandlerPool : Dictionary<PathString, Func<dynamic, object>>
     {
     }
 }

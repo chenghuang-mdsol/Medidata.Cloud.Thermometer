@@ -6,13 +6,12 @@ namespace Medidata.Cloud.Thermometer.Example
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             var app = new ThermometerApp()
-                .Answer("/HowManyCpus", question =>
+                .Answer("/HowManyCpus/fasf", question =>
                 {
-                    var msg = String.Join(", ", question.Keys.Select(x => String.Format("[{0}: {1}]", x, question[x])));
-                    return new {result = "OK", message = msg, name = question.Name };
+                    return new {result = "OK", x = question.x , y = question.y, name = question.Name };
                 })
                 .Answer("/CanAccessDb", question => new {result = "NG", message = "Exception message"})
                 .Answer("/GetException", question =>
