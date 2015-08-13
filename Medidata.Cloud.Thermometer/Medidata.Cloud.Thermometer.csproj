@@ -80,8 +80,7 @@
   <ItemGroup>
     <Compile Include="ThermometerQuestion.cs" />
     <Compile Include="IThermometerQuestion.cs" />
-    <Compile Include="ThermoAnswerFunc.cs" />
-    <Compile Include="ThermometerQuestionHandlers.cs" />
+    <Compile Include="ThermometerQuestionHandlerPool.cs" />
     <Compile Include="Middlewares\QuestionRouteMiddleware.cs" />
     <Compile Include="Middlewares\OnlyHttpGetMiddleware.cs" />
     <Compile Include="Middlewares\JsonResponseMiddleware.cs" />

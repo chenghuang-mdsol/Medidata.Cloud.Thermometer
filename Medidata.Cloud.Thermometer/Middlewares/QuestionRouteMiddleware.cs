@@ -9,19 +9,19 @@ namespace Medidata.Cloud.Thermometer.Middlewares
 {
     public class QuestionRouteMiddleware : OwinMiddleware
     {
-        private readonly ThermometerQuestionHandlers _handlers;
+        private readonly ThermometerQuestionHandlerPool _handlerPool;
 
-        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerQuestionHandlers handlers)
+        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerQuestionHandlerPool handlerPool)
             : base(next)
         {
-            if (handlers == null) throw new ArgumentNullException("handlers");
-            _handlers = handlers;
+            if (handlerPool == null) throw new ArgumentNullException("handlerPool");
+            _handlerPool = handlerPool;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
             Func<IThermometerQuestion, object> func;
-            if (_handlers.TryGetValue(context.Request.Path, out func))
+            if (_handlerPool.TryGetValue(context.Request.Path, out func))
             {
                 try
                 {

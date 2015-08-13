@@ -22,7 +22,7 @@ namespace Medidata.Cloud.Thermometer
         private readonly OwinHttpListener _assemblyAnchor;
 #pragma warning restore 169
 
-        private readonly ThermometerQuestionHandlers _handlers = new ThermometerQuestionHandlers();
+        private readonly ThermometerQuestionHandlerPool _handlerPool = new ThermometerQuestionHandlerPool();
 
         public ThermometerApp Reply(string question, Func<IThermometerQuestion, object> func)
         {
@@ -31,10 +31,10 @@ namespace Medidata.Cloud.Thermometer
 
             var key = new PathString(question.Trim());
 
-            if (_handlers.ContainsKey(key))
+            if (_handlerPool.ContainsKey(key))
                 throw new ArgumentException(String.Format("Question '{0}' has been defined.", question));
 
-            _handlers.Add(key, func);
+            _handlerPool.Add(key, func);
 
             return this;
         }
@@ -46,7 +46,7 @@ namespace Medidata.Cloud.Thermometer
                     {
                         app.Use<OnlyHttpGetMiddleware>()
                            .Use<JsonResponseMiddleware>()
-                           .Use<QuestionRouteMiddleware>(_handlers);
+                           .Use<QuestionRouteMiddleware>(_handlerPool);
                     });
         }
     }
