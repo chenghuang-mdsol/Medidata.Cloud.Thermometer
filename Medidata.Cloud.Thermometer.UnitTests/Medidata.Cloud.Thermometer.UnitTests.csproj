@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Extensions\OwinResponseExtensionsTest.cs" />
     <Compile Include="Extensions\OwinRequestExtensionsTests.cs" />
+    <Compile Include="TestHelpers\FakeRootMiddelware.cs" />
+    <Compile Include="Middlewares\JsonResponseMiddlewareTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
