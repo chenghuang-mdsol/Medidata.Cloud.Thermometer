@@ -4,7 +4,6 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Extensions
 {
-    [ExcludeFromCodeCoverage]
     internal static class OwinResponseExtensions
     {
         internal static void WriteAsJson(this IOwinResponse owner, object target)

@@ -34,5 +34,20 @@ namespace Medidata.Cloud.Thermometer.UnitTests.Extensions
             // Assert
             response.AssertWasCalled(x => x.Write(json));
         }
+
+        [TestMethod]
+        public void OwinResponse_WriteAsJson_NullObject_returns_EmptyJson()
+        {
+            // Arrange
+            var response = _fixture.Create<IOwinResponse>();
+            var obj = new {};
+            var json = new JavaScriptSerializer().Serialize(obj);
+
+            // Act
+            response.WriteAsJson(null);
+
+            // Assert
+            response.AssertWasCalled(x => x.Write(json));
+        }
     }
 }
