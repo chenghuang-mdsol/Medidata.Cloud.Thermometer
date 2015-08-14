@@ -7,34 +7,34 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class ActionRouteMiddleware : OwinMiddleware
+    internal class QuestionRouteMiddleware : OwinMiddleware
     {
-        private readonly ActionRouteConfiguration _config;
+        private readonly ThermometerRouteHandlerPool _handlerSet;
 
-        public ActionRouteMiddleware(OwinMiddleware next, ActionRouteConfiguration config)
+        public QuestionRouteMiddleware(OwinMiddleware next, ThermometerRouteHandlerPool handlerSet)
             : base(next)
         {
-            if (config == null) throw new ArgumentNullException("config");
-            _config = config;
+            if (handlerSet == null) throw new ArgumentNullException("handlerSet");
+            _handlerSet = handlerSet;
         }
 
         public override async Task Invoke(IOwinContext context)
         {
-            Func<IDictionary<string, object>, object> func;
-            if (_config.TryGetValue(context.Request.Path, out func))
+            var handler = _handlerSet.FindOrDefault(context.Request.Path.ToString());
+            if (handler != null)
             {
                 try
                 {
-                    var result = func(context.Request.ToDatabag()) ?? new { };
-                    context.Response.Write(result.ToJsonString());
+                    var result = handler.Handler(context.Request.ToThermometerQuestion()) ?? new { };
+                    context.Response.WriteAsJson(result);
 
                     await Next.Invoke(context);
                 }
                 catch (Exception e)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    var jsonString = new { exception = e.ToString() }.ToJsonString();
-                    context.Response.Write(jsonString);
+                    var result = new { exception = e.ToString() };
+                    context.Response.WriteAsJson(result);
                 }
             }
             else

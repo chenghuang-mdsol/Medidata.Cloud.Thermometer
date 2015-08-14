@@ -3,7 +3,7 @@ using Microsoft.Owin;
 
 namespace Medidata.Cloud.Thermometer.Middlewares
 {
-    public class JsonResponseMiddleware : OwinMiddleware
+    internal class JsonResponseMiddleware : OwinMiddleware
     {
         public JsonResponseMiddleware(OwinMiddleware next) : base(next)
         {
