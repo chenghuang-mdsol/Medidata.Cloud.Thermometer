@@ -19,10 +19,7 @@ namespace Medidata.Cloud.Thermometer.UnitTests.Middlewares
         public void Init()
         {
             _fixture = new Fixture().Customize(new AutoRhinoMockCustomization());
-            _fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
-            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             _nextMiddleware = MockRepository.GenerateMock<OwinMiddleware>(new FakeRootMiddelware());
-
             _sut = new JsonResponseMiddleware(_nextMiddleware);
         }
 
