@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Medidata.Cloud.Thermometer.Middlewares;
 using Medidata.Cloud.Thermometer.UnitTests.TestHelpers;
 using Microsoft.Owin;
@@ -19,9 +14,10 @@ namespace Medidata.Cloud.Thermometer.UnitTests.Middlewares
     public class OnlyHttpGetMiddlewareTests
     {
         private IFixture _fixture;
-        private OnlyHttpGetMiddleware _sut;
+        private ThermometerRouteHandlerPool _handlerPool;
         private OwinMiddleware _nextMiddleware;
-private ThermometerRouteHandlerPool _handlerPool;
+        private OnlyHttpGetMiddleware _sut;
+
         [TestInitialize]
         public void Init()
         {
@@ -38,7 +34,7 @@ private ThermometerRouteHandlerPool _handlerPool;
             context.Stub(x => x.Request).Return(_fixture.Create<IOwinRequest>());
             context.Request.Stub(x => x.Method).Return(HttpMethod.Get.Method);
 
-            IOwinResponse response = MockRepository.GenerateStub<IOwinResponse>();
+            var response = MockRepository.GenerateStub<IOwinResponse>();
             context.Stub(x => x.Response).Return(response);
             context.Response.StatusCode = 200;
 
@@ -48,8 +44,6 @@ private ThermometerRouteHandlerPool _handlerPool;
             //Assert
             _nextMiddleware.AssertWasCalled(x => x.Invoke(context));
             Debug.Assert(context.Response.StatusCode == 200);
-
-
         }
 
         [TestMethod]
@@ -60,7 +54,7 @@ private ThermometerRouteHandlerPool _handlerPool;
             context.Stub(x => x.Request).Return(_fixture.Create<IOwinRequest>());
             context.Request.Stub(x => x.Method).Return(HttpMethod.Delete.Method);
 
-            IOwinResponse response = MockRepository.GenerateStub<IOwinResponse>();
+            var response = MockRepository.GenerateStub<IOwinResponse>();
             context.Stub(x => x.Response).Return(response);
 
             //Act
@@ -70,7 +64,5 @@ private ThermometerRouteHandlerPool _handlerPool;
             _nextMiddleware.AssertWasNotCalled(x => x.Invoke(context));
             Assert.AreEqual(505, context.Response.StatusCode);
         }
-        
-
     }
 }

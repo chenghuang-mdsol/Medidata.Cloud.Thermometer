@@ -73,6 +73,9 @@
     <Compile Include="TestHelpers\FakeRootMiddelware.cs" />
     <Compile Include="Middlewares\JsonResponseMiddlewareTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThermometerHandlerTests.cs" />
+    <Compile Include="ThermometerQuestionTests.cs" />
+    <Compile Include="ThermometerRouteHandlerPoolTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
